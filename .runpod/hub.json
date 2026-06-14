@@ -1,0 +1,96 @@
+{
+  "title": "Runpod LLM (vLLM · Chat · Completion · JSON Mode)",
+  "description": "Serverless LLM inference via vLLM with an OpenAI-compatible request shape (chat completions + text completions). JSON mode, basic tool-calling shape, stop tokens, sampling controls. Configurable backbone model.",
+  "type": "serverless",
+  "category": "language",
+  "iconUrl": "https://example.com/icon.png",
+  "config": {
+    "runsOn": "GPU",
+    "containerDiskInGb": 50,
+    "presets": [
+      {
+        "name": "Mistral 7B Instruct",
+        "defaults": {
+          "LLM_MODEL": "mistralai/Mistral-7B-Instruct-v0.3",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.9",
+          "TENSOR_PARALLEL_SIZE": "1"
+        }
+      },
+      {
+        "name": "Llama 3 8B Instruct",
+        "defaults": {
+          "LLM_MODEL": "meta-llama/Meta-Llama-3-8B-Instruct",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.9",
+          "TENSOR_PARALLEL_SIZE": "1"
+        }
+      },
+      {
+        "name": "Qwen 2.5 7B Instruct",
+        "defaults": {
+          "LLM_MODEL": "Qwen/Qwen2.5-7B-Instruct",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.9",
+          "TENSOR_PARALLEL_SIZE": "1"
+        }
+      },
+      {
+        "name": "Phi-3 Mini 128k",
+        "defaults": {
+          "LLM_MODEL": "microsoft/Phi-3-mini-128k-instruct",
+          "MAX_MODEL_LEN": "32768",
+          "GPU_MEMORY_UTILIZATION": "0.85",
+          "TENSOR_PARALLEL_SIZE": "1"
+        }
+      },
+      {
+        "name": "Gemma 2 9B IT",
+        "defaults": {
+          "LLM_MODEL": "google/gemma-2-9b-it",
+          "MAX_MODEL_LEN": "8192",
+          "GPU_MEMORY_UTILIZATION": "0.9",
+          "TENSOR_PARALLEL_SIZE": "1"
+        }
+      }
+    ],
+    "env": [
+      {
+        "key": "LLM_MODEL",
+        "input": {
+          "name": "Model",
+          "type": "string",
+          "description": "HuggingFace repo id of the LLM (must match one of the curated allow-list unless `LLM_ALLOW_ANY=true`).",
+          "default": "mistralai/Mistral-7B-Instruct-v0.3"
+        }
+      },
+      {
+        "key": "MAX_MODEL_LEN",
+        "input": {
+          "name": "Max model length",
+          "type": "string",
+          "description": "Maximum context length passed to vLLM (tokens).",
+          "default": "8192"
+        }
+      },
+      {
+        "key": "GPU_MEMORY_UTILIZATION",
+        "input": {
+          "name": "GPU memory utilization",
+          "type": "string",
+          "description": "Fraction of GPU memory vLLM may use (0.0–1.0).",
+          "default": "0.9"
+        }
+      },
+      {
+        "key": "TENSOR_PARALLEL_SIZE",
+        "input": {
+          "name": "Tensor parallel size",
+          "type": "string",
+          "description": "Number of GPUs to shard the model across.",
+          "default": "1"
+        }
+      }
+    ]
+  }
+}

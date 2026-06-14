@@ -1,0 +1,158 @@
+{
+  "tests": [
+    {
+      "name": "chat_single_turn",
+      "input": {
+        "mode": "chat",
+        "messages": [
+          {"role": "user", "content": "Hello, who are you in one sentence?"}
+        ],
+        "max_tokens": 64,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "chat_with_system",
+      "input": {
+        "mode": "chat",
+        "messages": [
+          {"role": "system", "content": "You are a terse assistant. Answer in <= 10 words."},
+          {"role": "user", "content": "Name three planets."}
+        ],
+        "max_tokens": 32,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "chat_multi_turn",
+      "input": {
+        "mode": "chat",
+        "messages": [
+          {"role": "user", "content": "My name is Mina."},
+          {"role": "assistant", "content": "Nice to meet you, Mina."},
+          {"role": "user", "content": "What's my name?"}
+        ],
+        "max_tokens": 24,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "completion_mode",
+      "input": {
+        "mode": "complete",
+        "prompt": "The quick brown fox",
+        "max_tokens": 24,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "json_mode_with_schema",
+      "input": {
+        "mode": "json",
+        "messages": [
+          {"role": "user", "content": "Return a small JSON object with keys: city, country, population, founded_year. About Tehran."}
+        ],
+        "json_schema": {
+          "type": "object",
+          "required": ["city", "country", "population"],
+          "properties": {
+            "city": {"type": "string"},
+            "country": {"type": "string"},
+            "population": {"type": "integer"},
+            "founded_year": {"type": "integer"}
+          }
+        },
+        "max_tokens": 256,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "stop_sequences",
+      "input": {
+        "mode": "complete",
+        "prompt": "List three colors, one per line:\n1.",
+        "stop": ["4.", "\n\n"],
+        "max_tokens": 64,
+        "temperature": 0.2
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "batched_requests",
+      "input": {
+        "requests": [
+          {"mode": "chat", "messages": [{"role": "user", "content": "Say hi."}], "max_tokens": 16},
+          {"mode": "chat", "messages": [{"role": "user", "content": "Say bye."}], "max_tokens": 16},
+          {"mode": "complete", "prompt": "Once upon a time", "max_tokens": 24}
+        ]
+      },
+      "timeout": 180000
+    },
+    {
+      "name": "tool_choice_required",
+      "input": {
+        "mode": "chat",
+        "messages": [
+          {"role": "user", "content": "What's the weather in Tehran tomorrow?"}
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Get weather for a city",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {"type": "string"},
+                  "when": {"type": "string"}
+                },
+                "required": ["city"]
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "max_tokens": 200,
+        "temperature": 0.0
+      },
+      "timeout": 120000
+    },
+    {
+      "name": "high_temperature_sampling",
+      "input": {
+        "mode": "chat",
+        "messages": [{"role": "user", "content": "Write a four-word slogan for a coffee shop."}],
+        "max_tokens": 16,
+        "temperature": 1.2,
+        "top_p": 0.95
+      },
+      "timeout": 120000
+    }
+  ],
+  "config": {
+    "gpuTypeId": "NVIDIA GeForce RTX 4090",
+    "gpuCount": 1,
+    "env": [
+      {"key": "LLM_MODEL", "value": "mistralai/Mistral-7B-Instruct-v0.3"},
+      {"key": "MAX_MODEL_LEN", "value": "8192"},
+      {"key": "GPU_MEMORY_UTILIZATION", "value": "0.9"},
+      {"key": "TENSOR_PARALLEL_SIZE", "value": "1"}
+    ],
+    "allowedCudaVersions": [
+      "12.7",
+      "12.6",
+      "12.5",
+      "12.4",
+      "12.3",
+      "12.2",
+      "12.1",
+      "12.0"
+    ]
+  }
+}
