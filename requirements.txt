@@ -1,0 +1,8 @@
+runpod
+vllm>=0.5.0
+torch
+transformers>=4.40.0
+tokenizers
+requests
+pydantic
+outlines
