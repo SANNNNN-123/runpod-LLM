@@ -1,7 +1,6 @@
 runpod
-vllm==0.6.6.post1
 transformers>=4.40.0,<4.46.0
 tokenizers
 requests
 pydantic
-outlines
+outlines==0.0.46

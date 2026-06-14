@@ -17,7 +17,9 @@ RUN python3 -m pip install --no-cache-dir \
     torch==2.4.0
 
 COPY requirements.txt /requirements.txt
-RUN python3 -m pip install --no-cache-dir -r /requirements.txt
+RUN python3 -m pip install --no-cache-dir -r /requirements.txt \
+    && python3 -m pip install --no-cache-dir vllm==0.6.6.post1 \
+    && python3 -c "import vllm; v=vllm.__version__; print('vLLM', v); assert v.startswith('0.6.'), f'unexpected vllm {v}'"
 
 COPY . .
 
@@ -25,7 +27,6 @@ ENV LLM_MODEL=mistralai/Mistral-7B-Instruct-v0.3 \
     MAX_MODEL_LEN=8192 \
     GPU_MEMORY_UTILIZATION=0.9 \
     TENSOR_PARALLEL_SIZE=1 \
-    VLLM_USE_V1=0 \
     VLLM_WORKER_MULTIPROC_METHOD=spawn \
     PYTHONUNBUFFERED=1 \
     HF_HOME=/root/.cache/huggingface
